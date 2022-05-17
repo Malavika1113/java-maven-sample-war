@@ -8,13 +8,13 @@ env:
            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
            AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-           TEST_ID: ''        
+           #TEST_ID:
           
 jobs:
   startrunner:
     runs-on: ubuntu-latest
-    #outputs:
-      #runner: ${{ steps.readid.outputs.runnermachine }}   
+    outputs:
+      runner: ${{ steps.readid.outputs.runner }}  
     steps:
       - uses: actions/checkout@v3
       - id: readid
@@ -25,16 +25,11 @@ jobs:
              status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
-               echo $line > id.txt   
+               echo "::set-output name=runner::$line"   
                break
              fi
            done < "$input"
-#       - name: Upload math result for job 1
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: id
-#           path: id.txt
-               
+
   sleep-ec2:
     needs: startrunner
     runs-on: ubuntu-latest
@@ -42,47 +37,13 @@ jobs:
       - name: waiting ec2 to start
         run: |
           sleep 60
-          
-  testjob:
-    needs: [sleep-ec2]
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.runner.outputs.runner }}
-    steps:
-    - id: runner
-      run: echo "::set-output name=runner::$line"
       
   build:
-     needs: [startrunner,sleep-ec2,testjob]
-     runs-on: ${{ needs.build.outputs.runner }}
+     needs: [startrunner,sleep-ec2]
+     runs-on: ${{ needs.startrunner.outputs.runner }}
      steps:
         - run: echo "Hello World"
-#       - name: Download math result for job 1
-#         uses: actions/download-artifact@v3
-#         with:
-#           name: id
-#       - shell: bash
-#         run: |
-#           cat id.txt >> ${{ env.TEST_ID }}
-#   sonar:
-#     needs: build
-#     runs-on: ${{ TEST_ID }}
-#     steps:
-#       - run: echo "hello world"
-               
-  #stopawsec2:
-    #needs: [sleep-ec2]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: stopec2
-#         run: |
-#             input='${{ github.workspace }}/InstanceID.txt'
-#             while IFS= read -r line
-#             do
-#               aws ec2 stop-instances --instance-ids $line
-#             done < "$input"
-  
+
 
          
          
