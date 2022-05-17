@@ -29,17 +29,10 @@ jobs:
                break
              fi
            done < "$input"
-
-  sleep-ec2:
-    needs: startrunner
-    runs-on: ubuntu-latest
-    steps:
-      - name: waiting ec2 to start
-        run: |
-          sleep 60
+           sleep 60
       
   build:
-     needs: [startrunner,sleep-ec2]
+     needs: startrunner
      runs-on: ${{ needs.startrunner.outputs.runner }}
      steps:
         - run: echo "Hello World"
