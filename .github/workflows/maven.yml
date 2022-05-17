@@ -4,60 +4,14 @@
 name: Java CI with Maven
 on: 
   workflow_dispatch:
-env:
-           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-                   
-          
+
 jobs:
-  startrunner:
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.readid.outputs.runnermachine }}   
-    steps:
-      - uses: actions/checkout@v3
-      - id: readid
-        run: |
-           input='${{ github.workspace }}/InstanceID.txt'
-           while IFS= read -r line
-           do
-             status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
-             if [ "$status" != "running" ];then
-               aws ec2 start-instances --instance-ids $line
-               echo "::set-output name=runnermachine::$line"
-               break
-             fi
-           done < "$input"
-               
-  sleep-ec2:
-    needs: startrunner
+  testjob:
     runs-on: ubuntu-latest
     steps:
-      - name: waiting ec2 to start
-        run: |
-          sleep 60
-          
-  build:
-     needs: [startrunner,sleep-ec2]
-     runs-on: ubuntu-latest
-     steps:
-       - name: build step
-         run: echo ${{needs.startawsec2.outputs.runneroutput}}
-         #run: echo "Hello World" 
-               
-  #stopawsec2:
-    #needs: [sleep-ec2]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: stopec2
-#         run: |
-#             input='${{ github.workspace }}/InstanceID.txt'
-#             while IFS= read -r line
-#             do
-#               aws ec2 stop-instances --instance-ids $line
-#             done < "$input"
+      - run: echo ${{ secrets.TEST_SECRET }}
+        
+      
   
 
          
