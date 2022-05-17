@@ -21,6 +21,7 @@ jobs:
            input='${{ github.workspace }}/InstanceID.txt'
            while IFS= read -r line
            do
+             echo "$line"
              status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
@@ -32,7 +33,8 @@ jobs:
       
   build:
      needs: startrunner
-     runs-on: ${{ needs.startrunner.outputs.runner }}
+     runs-on: ubuntu-latest
+     #runs-on: ${{ needs.startrunner.outputs.runner }}
      steps:
         - run: echo "Hello World"
 
