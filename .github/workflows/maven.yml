@@ -117,6 +117,7 @@ jobs:
              echo "Proceed to next job"
           else
              exit 1
+          fi
     
   build:
      needs: startrunner
