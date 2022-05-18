@@ -110,15 +110,15 @@ jobs:
              exit 1
            fi
            
-      - name: set the status    
-        if: always()
-        run: |
-          echo ${{ steps.test.outcome }} ${{ steps.retry1.outcome }} ${{ steps.retry2.outcome }}  ${{ steps.retry3.outcome}}
-          if ${{ steps.test.outcome=='success' || steps.retry1.outcome=='success' || steps.retry2.outcome=='success' || steps.retry3.outcome=='success' }}; then
-             echo "Proceed to next job"
-          else
-             exit 1
-          fi
+#       - name: set the status    
+#         if: always()
+#         run: |
+#           echo ${{ steps.test.outcome }} ${{ steps.retry1.outcome }} ${{ steps.retry2.outcome }}  ${{ steps.retry3.outcome}}
+#           if ${{ steps.test.outcome=='success' || steps.retry1.outcome=='success' || steps.retry2.outcome=='success' || steps.retry3.outcome=='success' }}; then
+#              echo "Proceed to next job"
+#           else
+#              exit 1
+#           fi
     
   build:
      needs: startrunner
