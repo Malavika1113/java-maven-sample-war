@@ -21,20 +21,7 @@ jobs:
         id: readid
         continue-on-error: true 
         run: |
-           input=${{secrets.path}}
-           while IFS= read -r line
-           do
-             status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
-             if [ "$status" != "running" ];then
-               aws ec2 start-instances --instance-ids $line
-               echo "::set-output name=runner::$line"
-               echo "::set-output name=flag::true"
-               break
-             fi
-             echo "::set-output name=flag::false"
-           done < "$input"
-           #sleep 60
-           exit 1
+           ls -la ${{ github.workspace }}
            
 #   build:
 #      needs: startrunner
@@ -44,12 +31,12 @@ jobs:
 #            echo "Hello World"
 #            sleep 240
            
-  stop_runner:
-    needs: [ startrunner]
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          aws ec2 stop-instances --instance-ids ${{ needs.startrunner.outputs.runner }}
+#   stop_runner:
+#     needs: [ startrunner]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - run: |
+#           aws ec2 stop-instances --instance-ids ${{ needs.startrunner.outputs.runner }}
         
    
          
