@@ -25,7 +25,7 @@ jobs:
              status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
-               echo '::set-output name=runner::self-hosted'
+               echo '::set-output name=runner::$line'
                break
              fi
            done < "$input"
@@ -38,6 +38,15 @@ jobs:
         - run: |
            echo "Hello World"
            sleep 120
+           
+  stop_runner:
+    needs: [build, startrunner]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          aws ec2 stop-instances --instance-ids ${{ needs.startrunner.outputs.runner }}
+        
+   
          
 
 
