@@ -24,7 +24,6 @@ jobs:
            input='${{ github.workspace }}/InstanceID.txt'
            while IFS= read -r line
            do
-             echo "$line"
              status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
@@ -34,7 +33,8 @@ jobs:
              fi
              echo "::set-output name=flag::false"
            done < "$input"
-           sleep 60
+           #sleep 60
+           echo $flag
            if [ "$flag" == "false" ];then
              exit 1
            fi
