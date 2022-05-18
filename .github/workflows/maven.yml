@@ -23,12 +23,13 @@ jobs:
         run: |
            aws s3 cp s3://jeena-aws-s3/Instance-details/instanceid.txt ${{ github.workspace }}/id.txt
            cat ${{ github.workspace }}/id.txt
+           echo " "
            echo "--------------------------------------------------"
            input='${{ github.workspace }}/id.txt'
            while IFS= read -r line
            do
              echo $line | sed 's/^ *//g'
-             status=$(aws ec2 describe-instance-status --region ${{ secrets.AWS_REGION }} --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
+             status=$(aws ec2 describe-instance-status --region us-west-1 --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
                echo "::set-output name=runner::$line"
