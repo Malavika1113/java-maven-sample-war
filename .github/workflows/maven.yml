@@ -35,8 +35,7 @@ jobs:
       
   build:
      needs: startrunner
-     runs-on: ubuntu-latest
-     #runs-on: ${{ needs.startrunner.outputs.runner }}
+     runs-on: self-hosted
      steps:
         - run: echo "Hello World"
 
