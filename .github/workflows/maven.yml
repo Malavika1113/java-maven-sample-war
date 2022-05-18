@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        continue-on-error: true          # make the step always success
+        #continue-on-error: true          # make the step always success
         id: test
         run: |
           exit 1                         # let's say 1st failed. for you, here could be mvn deploy command.
