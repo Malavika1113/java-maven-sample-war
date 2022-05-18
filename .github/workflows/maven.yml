@@ -34,10 +34,7 @@ jobs:
              echo "::set-output name=flag::false"
            done < "$input"
            #sleep 60
-           echo $runnerflag
-           if [ "$runnerflag" == "false" ];then
-             exit 1
-           fi
+           exit1
            
       - name: retry
         continue-on-error: true
