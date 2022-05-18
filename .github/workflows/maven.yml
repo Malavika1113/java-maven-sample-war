@@ -26,6 +26,7 @@ jobs:
            input='${{ github.workspace }}/id.txt'
            while IFS=$'\r\n' read -r line
            do 
+             echo $line
              status=$(aws ec2 describe-instance-status --region us-west-1 --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
