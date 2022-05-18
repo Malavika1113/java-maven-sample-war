@@ -27,6 +27,7 @@ jobs:
            echo "-------------------------"
            cat input.txt
            echo "-------------------------"
+           wc -l input.txt
            while IFS="" read -r line
            do 
              echo $line
