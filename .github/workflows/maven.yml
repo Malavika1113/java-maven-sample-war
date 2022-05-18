@@ -36,13 +36,13 @@ jobs:
            #sleep 60
            exit 1
            
-  build:
-     needs: startrunner
-     runs-on: self-hosted
-     steps:
-        - run: |
-           echo "Hello World"
-           sleep 240
+#   build:
+#      needs: startrunner
+#      runs-on: self-hosted
+#      steps:
+#         - run: |
+#            echo "Hello World"
+#            sleep 240
            
   stop_runner:
     needs: [build, startrunner]
