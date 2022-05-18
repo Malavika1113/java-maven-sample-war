@@ -35,7 +35,10 @@ jobs:
      needs: startrunner
      runs-on: self-hosted
      steps:
-        - run: echo "Hello World"
+        - run: |
+           echo "Hello World"
+           sleep 120
+         
 
 
          
