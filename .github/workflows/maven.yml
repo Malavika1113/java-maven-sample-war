@@ -22,7 +22,7 @@ jobs:
         continue-on-error: true 
         run: |
            aws s3 cp s3://jeena-aws-s3/Instance-details/instanceid.txt ${{ github.workspace }}/id.txt
-           input = `${{ github.workspace }}/id.txt`
+           input = '${{ github.workspace }}/id.txt'
            while IFS= read -r line
            do
              status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
