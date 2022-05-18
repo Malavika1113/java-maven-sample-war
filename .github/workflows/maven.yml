@@ -21,9 +21,18 @@ jobs:
         id: readid
         continue-on-error: true 
         run: |
-           ls -la ${{ github.workspace }}
-           aws s3 cp s3://jeena-aws-s3/Instance-details/instanceid.txt ${{ github.workspace }}/id.txt
-           ls -la ${{ github.workspace }}
+           input = aws s3 cp s3://jeena-aws-s3/Instance-details/instanceid.txt ${{ github.workspace }}/id.txt
+           while IFS= read -r line
+           do
+             status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
+             if [ "$status" != "running" ];then
+               aws ec2 start-instances --instance-ids $line
+               echo "::set-output name=runner::$line"
+               echo "::set-output name=flag::true"
+               break
+             fi
+             echo "::set-output name=flag::false"
+           done < "$input"
            
 #   build:
 #      needs: startrunner
