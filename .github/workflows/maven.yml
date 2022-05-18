@@ -17,7 +17,9 @@ jobs:
       runnerflag: ${{ steps.readid.outputs.flag }}
     steps:
       - uses: actions/checkout@v3
-      - id: readid
+      - name: test
+        id: readid
+        continue-on-error: true 
         run: |
            input='${{ github.workspace }}/InstanceID.txt'
            while IFS= read -r line
@@ -33,11 +35,88 @@ jobs:
              echo "::set-output name=flag::false"
            done < "$input"
            sleep 60
-#   Runner-status-check:
-#     needs: startrunner
-#     runs-on: ubuntu-latest
-#     if: ${{ needs.startrunner.outputs.flag }} == 'false'
-    
+           if [ "$flag" == "false" ];then
+             exit 1
+           fi
+           
+      - name: retry
+        continue-on-error: true
+        id: retry1
+        if: steps.test.outcome=='failure'  
+        run: |
+          input='${{ github.workspace }}/InstanceID.txt'
+           while IFS= read -r line
+           do
+             echo "$line"
+             status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
+             if [ "$status" != "running" ];then
+               aws ec2 start-instances --instance-ids $line
+               echo "::set-output name=runner::$line"
+               echo "::set-output name=flag::true"
+               break
+             fi
+             echo "::set-output name=flag::false"
+           done < "$input"
+           sleep 60
+           if [ "$flag" == "false" ];then
+             exit 1
+           fi
+           
+      - name: retry 2
+        continue-on-error: true
+        id: retry2
+        if: steps.retry1.outcome=='failure'   # check the step outcome, retry 2nd time
+        run: |
+          echo retry 2nd time
+          input='${{ github.workspace }}/InstanceID.txt'
+           while IFS= read -r line
+           do
+             echo "$line"
+             status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
+             if [ "$status" != "running" ];then
+               aws ec2 start-instances --instance-ids $line
+               echo "::set-output name=runner::$line"
+               echo "::set-output name=flag::true"
+               break
+             fi
+             echo "::set-output name=flag::false"
+           done < "$input"
+           sleep 60
+           if [ "$flag" == "false" ];then
+             exit 1
+           fi
+           
+      - name: retry 3
+        continue-on-error: true
+        id: retry3
+        if: steps.retry2.outcome=='failure'      # check the step outcome, retry 3rd time
+        run: |
+          echo retry 3rd time
+          input='${{ github.workspace }}/InstanceID.txt'
+           while IFS= read -r line
+           do
+             echo "$line"
+             status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
+             if [ "$status" != "running" ];then
+               aws ec2 start-instances --instance-ids $line
+               echo "::set-output name=runner::$line"
+               echo "::set-output name=flag::true"
+               break
+             fi
+             echo "::set-output name=flag::false"
+           done < "$input"
+           sleep 60
+           if [ "$flag" == "false" ];then
+             exit 1
+           fi
+           
+      - name: set the status    
+        if: always()
+        run: |
+          if ${{ steps.test.outcome=='success' || steps.retry1.outcome=='success' || steps.retry2.outcome=='success' || steps.retry3.outcome=='success' }}; then
+             echo "Proceed to next job"
+          else
+             exit 1
     
   build:
      needs: startrunner
