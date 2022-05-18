@@ -21,7 +21,7 @@ jobs:
         id: readid
         continue-on-error: true 
         run: |
-           input=`${{ secrets.path}}`
+           input=${{ secrets.path}}
            while IFS= read -r line
            do
              status=$(aws ec2 describe-instance-status --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
