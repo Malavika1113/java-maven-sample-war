@@ -23,6 +23,7 @@ jobs:
         run: |
            aws s3 cp s3://jeena-aws-s3/Instance-details/instanceid.txt ${{ github.workspace }}/id.txt
            cat ${{ github.workspace }}/id.txt
+           echo "--------------------------------------------------"
            input='${{ github.workspace }}/id.txt'
            while IFS= read -r line
            do
