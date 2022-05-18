@@ -22,6 +22,8 @@ jobs:
         continue-on-error: true 
         run: |
            ls -la ${{ github.workspace }}
+           aws s3 cp s3://jeena-aws-s3/Instance-details/instanceid.txt ${{ github.workspace }}/id.txt
+           ls -la ${{ github.workspace }}
            
 #   build:
 #      needs: startrunner
