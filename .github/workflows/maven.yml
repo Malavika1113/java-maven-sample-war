@@ -24,7 +24,9 @@ jobs:
            aws s3 cp s3://instance-id/instanceid.txt ${{ github.workspace }}/id.txt
            #input='${{ github.workspace }}/id.txt'
            sed 's/\r$//' ${{ github.workspace }}/id.txt > input.txt
-           while IFS=$'\r' read -r line
+           echo "-------------------------"
+           cat input.txt
+           while IFS= read -r line
            do 
              echo $line
              status=$(aws ec2 describe-instance-status --region us-west-1 --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
