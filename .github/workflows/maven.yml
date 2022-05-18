@@ -33,10 +33,10 @@ jobs:
              echo "::set-output name=flag::false"
            done < "$input"
            sleep 60
-  Runner-status-check:
-    needs: startrunner
-    runs-on: ubuntu-latest
-    if: ${{ needs.startrunner.outputs.flag }} == 'false'
+#   Runner-status-check:
+#     needs: startrunner
+#     runs-on: ubuntu-latest
+#     if: ${{ needs.startrunner.outputs.flag }} == 'false'
     
     
   build:
