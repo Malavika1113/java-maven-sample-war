@@ -33,6 +33,7 @@ jobs:
              fi
              echo "::set-output name=flag::false"
            done < input.txt
+           exit
            
 #   build:
 #      needs: startrunner
