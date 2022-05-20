@@ -23,11 +23,6 @@ jobs:
         run: |
            aws s3 cp s3://instance-id/instanceid.txt ${{ github.workspace }}/id.txt
            input='${{ github.workspace }}/id.txt'
-           #sed 's/\r$//' ${{ github.workspace }}/id.txt > input.txt
-           #echo "-------------------------"
-           #cat input.txt
-           #echo "-------------------------"
-           #wc -l input.txt
            while IFS="\n" read -r line
            do 
              echo $line
