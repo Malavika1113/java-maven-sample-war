@@ -9,20 +9,20 @@ jobs:
     steps:
       - uses: ./.github/workflows/startRunner.yml
            
-#   build:
-#      needs: startrunner
-#      runs-on: self-hosted
-#      steps:
-#         - run: |
-#            echo "Hello World"
-#            sleep 240
+  build:
+     needs: initializerunner
+     runs-on: ${{ needs.initializerunner.outputs.runner }}
+     steps:
+        - run: |
+           echo "Hello World"
+           sleep 240
            
-#   stop_runner:
-#     needs: [ startrunner]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - run: |
-#           aws ec2 stop-instances --instance-ids ${{ needs.startrunner.outputs.runner }}
+  stop_runner:
+    needs: [ initializerunner]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          aws ec2 stop-instances --instance-ids ${{ needs.initializerunner.outputs.runner }}
         
    
          
