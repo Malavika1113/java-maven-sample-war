@@ -22,6 +22,7 @@ jobs:
         #continue-on-error: true 
         run: |
            aws s3 cp s3://instance-id/instanceid.txt ${{ github.workspace }}/id.txt
+           cat ${{ github.workspace }}/id.txt
            input='${{ github.workspace }}/id.txt'
            while IFS="\n" read -r line
            do 
@@ -34,7 +35,7 @@ jobs:
                break
              fi
              echo "::set-output name=flag::false"
-           done < input
+           done < $input
            
 #   build:
 #      needs: startrunner
