@@ -19,6 +19,7 @@ jobs:
       runner: ${{ steps.readid.outputs.runner }}
       runnerflag: ${{ steps.readid.outputs.flag }}
     steps:
+      - uses: actions/checkout@v3
       - name: test
         id: readid
         run: |
