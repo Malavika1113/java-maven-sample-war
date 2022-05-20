@@ -1,6 +1,3 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
 name: Java CI with Maven
 on: 
   workflow_dispatch:
@@ -25,6 +22,7 @@ jobs:
            cat ${{ github.workspace }}/id.txt
            input='${{ github.workspace }}/id.txt'
            sed 's/\r$//' ${{ github.workspace }}/id.txt > input.txt
+           echo "" >> input.txt
            while IFS="\n" read -r line
            do 
              echo $line
