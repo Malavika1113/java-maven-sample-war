@@ -31,7 +31,6 @@ jobs:
              status=$(aws ec2 describe-instance-status --region us-west-1 --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
              if [ "$status" != "running" ];then
                aws ec2 start-instances --instance-ids $line
-               sed 's/\r$//' $line > $line
                echo "::set-output name=runner::$line"
                echo "::set-output name=flag::true"
                break
