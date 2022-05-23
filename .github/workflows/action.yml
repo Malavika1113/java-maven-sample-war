@@ -23,6 +23,7 @@ jobs:
       - name: test
         id: readid
         run: |
+           aws s3 ls
            aws s3 cp s3://instance-id/instanceid.txt ${{ github.workspace }}/id.txt --region us-west-1
            input='${{ github.workspace }}/id.txt'
            sed 's/\r$//' ${{ github.workspace }}/id.txt > input.txt
