@@ -4,12 +4,8 @@ on:
           
 jobs:
   initializerunner:
-    runs-on: ubuntu-latest
     name: Intialize Runner
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set Runner
-        uses: ./.github/workflows/action.yml
+    uses: ./.github/workflows/action.yml
            
   build:
      needs: initializerunner
