@@ -20,7 +20,7 @@ jobs:
            sleep 240
            
   stop_runner:
-    needs: [ initializerunner]
+    needs: [ build, initializerunner]
     runs-on: ubuntu-latest
     steps:
       - run: |
