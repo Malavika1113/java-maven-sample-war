@@ -2,20 +2,12 @@ name: Start Runner
   
 on: 
   workflow_dispatch:
-  workflow_call:
-    outputs:
-      runner:
-        description: "The runner output string"
-        value: ${{ jobs.startrunner.outputs.runner }}
+#   workflow_call:
+#     outputs:
+#       runner:
+#         description: "The runner output string"
+#         value: ${{ jobs.startrunner.outputs.runner }}
       
-    secrets:
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        required: true
-      AWS_DEFAULT_REGION:
-        required: true
-          
 jobs:
   startrunner:
     runs-on: ubuntu-latest
