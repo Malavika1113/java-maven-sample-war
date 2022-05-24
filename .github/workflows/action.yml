@@ -1,6 +1,7 @@
 name: Start Runner
   
-on:
+on: 
+  workflow_dispatch:
   workflow_call:
     outputs:
       runner:
