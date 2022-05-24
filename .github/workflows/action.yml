@@ -36,4 +36,4 @@ jobs:
                break
              fi
              echo "::set-output name=flag::false"
-           done < input.txt
+           done < input
