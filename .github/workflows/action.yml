@@ -7,11 +7,6 @@ on:
         description: "The runner output string"
         value: ${{ jobs.startrunner.outputs.runner }}
       
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-          
 jobs:
   startrunner:
     runs-on: ubuntu-latest
@@ -23,9 +18,10 @@ jobs:
       - name: test
         id: readid
         run: |
-           
+           aws s3 cp s3://instance-id/instanceid.txt ${{ github.workspace }}/id.txt --region us-west-1
            input='${{ github.workspace }}/InstanceID.txt'
-           
+           sed 's/\r$//' ${{ github.workspace }}/id.txt > input.txt
+           echo "" >> input.txt
            while IFS="\n" read -r line
            do 
              status=$(aws ec2 describe-instance-status --region us-west-1 --instance-id $line | jq -r '.InstanceStatuses[] | .InstanceState | .Name')
