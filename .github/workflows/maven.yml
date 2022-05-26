@@ -46,6 +46,11 @@ jobs:
       - name: Fortify Analysis
         run: echo Starting Fortify stage!!
         
+  Upload-Packages:
+    needs: [Fortify,initializerunner]
+    name: Upload to Registry
+    uses: ./.github/workflows/upload.yml
+        
   Post-Release:
     name: Post-Release
     needs: [initializerunner,Pre-Release,build,Sonar,Fortify]
