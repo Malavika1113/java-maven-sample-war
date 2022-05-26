@@ -67,7 +67,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
   Post-Release:
     name: Post-Release
-    needs: [initializerunner,Pre-Release,build,Sonar,Fortify,Upload-Packages]
+    needs: [initializerunner,Pre-Release,build,Sonar,Upload-Packages]
     uses: ./.github/workflows/post-release.yml  
       
   Declarative-Post-Actions:
