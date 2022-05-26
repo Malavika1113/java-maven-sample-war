@@ -62,7 +62,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: mvn deploy:deploy-file -Dtoken=GHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
   Post-Release:
