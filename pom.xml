@@ -2,23 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.Premvikash</groupId>
-	<artifactId>Example</artifactId>
-	<version>0.0.1</version>
-	<name>Example</name>
+	<groupId>com.github.POC</groupId>
+	<artifactId>SNAPSHOT</artifactId>
+	<version>1.0.0</version>
+	<name>Snapshot</name>
 	<packaging>war</packaging>
-	<url>https://github.com/Premvikash/</url>
+	<url>https://github.com/Malavika1113/</url>
 
-	<issueManagement>
-		<url>https://github.com/Premvikash/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-
-	<scm>
-		<url>https://github.com/Premvikash/</url>
-		<connection>scm:git:git://github.com/Premvikash/java-maven-ci.git</connection>
-		<developerConnection>scm:git:git@github.com/Premvikash/java-maven-ci.git</developerConnection>
-	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
