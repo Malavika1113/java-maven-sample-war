@@ -47,9 +47,11 @@ jobs:
         run: echo Starting Fortify stage!!
         
   Upload-Packages:
-    needs: [Fortify,initializerunner]
+    needs: [Fortify,initializerunner,build,Sonar]
     name: Upload to Registry
     uses: ./.github/workflows/upload.yml
+    with:
+      uploadrunner: ${{ needs.initializerunner.outputs.activerunner }}
         
   Post-Release:
     name: Post-Release
