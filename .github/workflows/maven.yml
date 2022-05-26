@@ -62,7 +62,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Publish package
-        run: mvn deploy:deploy-file -Dtoken=GHUB_TOKEN
+        run: mvn deploy:deploy-file -Dfile=/home/ubuntu/actions-runner/_work/java-maven-sample-war/java-maven-sample-war/target/SNAPSHOT-1.0.0.war -DpomFile=./actions-runner/_work/java-maven-sample-war/java-maven-sample-war/pom.xml -DrepositoryId=github -Durl=https://maven.pkg.github.com/Malavika1113/java-maven-sample-war -Dtoken=GHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
   Post-Release:
