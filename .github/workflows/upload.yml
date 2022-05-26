@@ -1,6 +1,10 @@
 name: Publish package to GitHub Packages
 on:
   workflow_call:
+    inputs:
+      uploadrunner:
+        required: true
+        type: string
   release:
     types: [created]
 jobs:
