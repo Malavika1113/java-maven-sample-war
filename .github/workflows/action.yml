@@ -32,7 +32,7 @@ jobs:
              n=0
              until [[ $retry -ge $maxRetries || $n -gt 0 ]]
              do
-               aws s3 cp s3://instidbucket/id/instid2.cfg ${{ github.workspace }}/id.cfg --region us-west-1
+               aws s3 cp s3://instance-id/actualinstanceid.cfg ${{ github.workspace }}/id.cfg --region us-west-1
                input='${{ github.workspace }}/id.cfg'
                sed 's/\r$//' ${{ github.workspace }}/id.cfg > input.cfg
                echo "" >> input.cfg
