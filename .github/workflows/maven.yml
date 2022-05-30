@@ -10,13 +10,13 @@ env:
 
 jobs:
   Pre-Release:
-    name: Pre-Release
-    uses: ./.github/workflows/pre-release.yml
+    name: Pre-Release 
+    uses: Malavika1113/DevOps/.github/workflows/pre-release.yml@main
     
   initializerunner:
     name: Intialize Runner
     needs: Pre-Release
-    uses: ./.github/workflows/action.yml
+    uses: Malavika1113/DevOps/.github/workflows/startRunner.yml@main
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -67,8 +67,8 @@ jobs:
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
   Post-Release:
     name: Post-Release
-    needs: [initializerunner,Pre-Release,build,Sonar,Upload-Packages]
-    uses: ./.github/workflows/post-release.yml  
+    needs: [initializerunner,Pre-Release,build,Sonar]
+    uses: Malavika1113/DevOps/.github/workflows/post-release.yml@main
       
   Declarative-Post-Actions:
     needs: [Post-Release]
